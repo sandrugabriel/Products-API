@@ -26,7 +26,21 @@ namespace ProduseApi.Controllers
             return Ok(products);
         }
         
+        
+        [HttpGet("/findById")]
+        public async Task<ActionResult<Produs>> GetById([FromQuery] int id)
+        {
+            var produs = await _produsRepository.GetByIdAsync(id);
+            return Ok(produs);
+        }
 
+
+        [HttpGet("/find/{name}")]
+        public async Task<ActionResult<Produs>> GetByNameRoute([FromRoute] string name)
+        {
+            var produs = await _produsRepository.GetByNameAsync(name);
+            return Ok(produs);
+        }
 
     }
 }

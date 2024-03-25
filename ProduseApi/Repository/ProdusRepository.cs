@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProduseApi.Data;
 using ProduseApi.Models;
 using ProduseApi.Repository.Interfaces;
+using System;
 
 
 namespace ProduseApi.Repository
@@ -22,5 +23,34 @@ namespace ProduseApi.Repository
         {
             return await _context.Produs.ToListAsync();
         }
+
+        public async Task<Produs> GetByIdAsync(int id)
+        {
+            List<Produs> all = await _context.Produs.ToListAsync();
+
+            for (int i = 0; i < all.Count; i++)
+            {
+                if (all[i].Id == id) return all[i];
+            }
+
+            return null;
+        }
+
+        public async Task<Produs> GetByNameAsync(string name)
+        {
+            List<Produs> all = await _context.Produs.ToListAsync();
+
+            for (int i = 0; i < all.Count; i++)
+            {
+                if (all[i].Name.Equals(name))
+                {
+                    return all[i];
+                }
+            }
+
+            return null;
+        }
+
+
     }
 }

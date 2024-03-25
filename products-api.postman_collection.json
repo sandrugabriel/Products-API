@@ -26,6 +26,51 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "FindById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7263/findById?id=1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7263",
+					"path": [
+						"findById"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FindByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7263/find/samsung%20s24",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7263",
+					"path": [
+						"find",
+						"samsung%20s24"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
