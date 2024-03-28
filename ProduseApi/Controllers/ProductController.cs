@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProduseApi.Dto;
 using ProduseApi.Models;
 using ProduseApi.Repository.Interfaces;
 
@@ -41,6 +42,30 @@ namespace ProduseApi.Controllers
             var produs = await _produsRepository.GetByNameAsync(name);
             return Ok(produs);
         }
+
+
+        [HttpPost("/create")]
+        public async Task<ActionResult<Produs>> Create([FromBody] CreateRequest request)
+        {
+            var movie = await _produsRepository.Create(request);
+            return Ok(movie);
+
+        }
+
+        [HttpPut("/update")]
+        public async Task<ActionResult<Produs>> Update([FromQuery] int id, [FromBody] UpdateRequest request)
+        {
+            var movie = await _produsRepository.Update(id, request);
+            return Ok(movie);
+        }
+
+        [HttpDelete("/deleteById")]
+        public async Task<ActionResult<Produs>> DeleteCarById([FromQuery] int id)
+        {
+            var movie = await _produsRepository.DeleteById(id);
+            return Ok(movie);
+        }
+
 
     }
 }
