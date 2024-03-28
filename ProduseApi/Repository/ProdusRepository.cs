@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProduseApi.Data;
+using ProduseApi.Dto;
 using ProduseApi.Models;
 using ProduseApi.Repository.Interfaces;
 using System;
@@ -49,6 +50,48 @@ namespace ProduseApi.Repository
             }
 
             return null;
+        }
+
+
+        public async Task<Produs> Create(CreateRequest request)
+        {
+
+            var product = _mapper.Map<Produs>(request);
+
+            _context.Produs.Add(product);
+
+            await _context.SaveChangesAsync();
+
+            return product;
+
+        }
+
+        public async Task<Produs> Update(int id, UpdateRequest request)
+        {
+
+            var product = await _context.Produs.FindAsync(id);
+
+            product.Pret = request.Pret ?? product.Pret;
+            product.Name = request.Name ?? product.Name;
+            product.Expirare = request.Expirare ?? product.Expirare;
+
+            _context.Produs.Update(product);
+
+            await _context.SaveChangesAsync();
+
+            return product;
+
+        }
+
+        public async Task<Produs> DeleteById(int id)
+        {
+            var product = await _context.Produs.FindAsync(id);
+
+            _context.Produs.Remove(product);
+
+            await _context.SaveChangesAsync();
+
+            return product;
         }
 
 
