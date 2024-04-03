@@ -1,69 +1,112 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProduseApi.Controllers.interfaces;
 using ProduseApi.Dto;
+using ProduseApi.Exceptions;
 using ProduseApi.Models;
 using ProduseApi.Repository.Interfaces;
+using ProduseApi.Service.interfaces;
 
 namespace ProduseApi.Controllers
 {
-    [ApiController]
-    [Route("api/v1/products")]
-    public class ProductController:ControllerBase
+    public class ProductController : ControllerAPI
     {
 
-        private readonly ILogger<ProductController> _logger;
 
-        private IProdusRepository _produsRepository;
+        private IQueryService _queryService;
+        private ICommandService _commandService;
 
-        public ProductController(ILogger<ProductController> logger,IProdusRepository productRepository)
+        public ProductController(IQueryService queryService, ICommandService commandService)
         {
-            _logger = logger;
-            _produsRepository = productRepository;
+            _queryService = queryService;
+            _commandService = commandService;
         }
 
-        [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<Produs>>> GetAll()
+        public override async Task<ActionResult<List<Produs>>> GetAll()
         {
-            var products = await _produsRepository.GetAllAsync();
-            return Ok(products);
-        }
-        
-        
-        [HttpGet("/findById")]
-        public async Task<ActionResult<Produs>> GetById([FromQuery] int id)
-        {
-            var produs = await _produsRepository.GetByIdAsync(id);
-            return Ok(produs);
-        }
+            try
+            {
+                var produss = await _queryService.GetAll();
 
+                return Ok(produss);
 
-        [HttpGet("/find/{name}")]
-        public async Task<ActionResult<Produs>> GetByNameRoute([FromRoute] string name)
-        {
-            var produs = await _produsRepository.GetByNameAsync(name);
-            return Ok(produs);
+            }
+            catch (ItemsDoNotExist ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-
-        [HttpPost("/create")]
-        public async Task<ActionResult<Produs>> Create([FromBody] CreateRequest request)
+        public override async Task<ActionResult<Produs>> GetByName([FromQuery] string name)
         {
-            var movie = await _produsRepository.Create(request);
-            return Ok(movie);
+
+            try
+            {
+                var produs = await _queryService.GetByNameAsync(name);
+                return Ok(produs);
+            }
+            catch (ItemDoesNotExist ex)
+            {
+                return NotFound(ex.Message);
+            }
 
         }
 
-        [HttpPut("/update")]
-        public async Task<ActionResult<Produs>> Update([FromQuery] int id, [FromBody] UpdateRequest request)
+        public override async Task<ActionResult<Produs>> GetById([FromQuery] int id)
         {
-            var movie = await _produsRepository.Update(id, request);
-            return Ok(movie);
+
+            try
+            {
+                var produs = await _queryService.GetById(id);
+                return Ok(produs);
+            }
+            catch (ItemDoesNotExist ex)
+            {
+                return NotFound(ex.Message);
+            }
+
         }
 
-        [HttpDelete("/deleteById")]
-        public async Task<ActionResult<Produs>> DeleteCarById([FromQuery] int id)
+        public override async Task<ActionResult<Produs>> CreateProdus(CreateRequest request)
         {
-            var movie = await _produsRepository.DeleteById(id);
-            return Ok(movie);
+            try
+            {
+                var produs = await _commandService.Create(request);
+                return Ok(produs);
+            }
+            catch (InvalidPrice ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public override async Task<ActionResult<Produs>> UpdateProdus([FromQuery] int id, UpdateRequest request)
+        {
+            try
+            {
+                var produs = await _commandService.Update(id, request);
+                return Ok(produs);
+            }
+            catch (InvalidPrice ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ItemDoesNotExist ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        public override async Task<ActionResult<Produs>> DeleteProdus([FromQuery] int id)
+        {
+            try
+            {
+                var produs = await _commandService.Delete(id);
+                return Ok(produs);
+            }
+            catch (ItemDoesNotExist ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
