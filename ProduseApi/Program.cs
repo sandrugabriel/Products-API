@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using ProduseApi.Data;
 using ProduseApi.Repository;
 using ProduseApi.Repository.Interfaces;
+using ProduseApi.Service;
+using ProduseApi.Service.interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProdusRepository,ProdusRepository>();
+builder.Services.AddScoped<IQueryService,QueryService>();
+builder.Services.AddScoped<ICommandService,CommandService>();
+
 builder.Services.AddDbContext<AppDbContext>(option => option.UseMySql(builder.Configuration.GetConnectionString("Default")!,
     new MySqlServerVersion(new Version(8, 0, 6))));
 builder.Services.AddFluentMigratorCore()
