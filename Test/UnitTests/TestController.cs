@@ -46,17 +46,17 @@ namespace Test.UnitTests
         [Fact]
         public async Task GetAll_ValidPrice()
         {
-            var movies = TestProdusFactory.CreateProduse(5);
+            var produss = TestProdusFactory.CreateProduse(5);
 
-            _query.Setup(repo => repo.GetAll()).ReturnsAsync(movies);
+            _query.Setup(repo => repo.GetAll()).ReturnsAsync(produss);
 
             var result = await _controller.GetAll();
 
             var okresult = Assert.IsType<OkObjectResult>(result.Result);
 
-            var moviesAll = Assert.IsType<List<Produs>>(okresult.Value);
+            var produssAll = Assert.IsType<List<Produs>>(okresult.Value);
 
-            Assert.Equal(5, moviesAll.Count);
+            Assert.Equal(5, produssAll.Count);
             Assert.Equal(200, okresult.StatusCode);
 
         }
@@ -91,16 +91,16 @@ namespace Test.UnitTests
                 Name = "test",
                 Pret = 100
             };
-            var movie = TestProdusFactory.CreateProdus(5);
-            movie.Pret = create.Pret;
-            _command.Setup(repo => repo.Create(create)).ReturnsAsync(movie);
+            var produs = TestProdusFactory.CreateProdus(5);
+            produs.Pret = create.Pret;
+            _command.Setup(repo => repo.Create(create)).ReturnsAsync(produs);
 
             var result = await _controller.CreateProdus(create);
 
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
 
             Assert.Equal(okResult.StatusCode, 200);
-            Assert.Equal(movie, okResult.Value);
+            Assert.Equal(produs, okResult.Value);
 
         }
 
@@ -112,8 +112,8 @@ namespace Test.UnitTests
                 Pret = 0
             };
 
-            var movie = TestProdusFactory.CreateProdus(5);
-            movie.Pret = update.Pret.Value;
+            var produs = TestProdusFactory.CreateProdus(5);
+            produs.Pret = update.Pret.Value;
 
             _command.Setup(repo => repo.Update(5, update)).ThrowsAsync(new InvalidPrice(Constants.InvalidPrice));
 
@@ -134,17 +134,17 @@ namespace Test.UnitTests
             {
                 Pret = 200
             };
-            var movie = TestProdusFactory.CreateProdus(5);
-            movie.Pret = update.Pret.Value;
+            var produs = TestProdusFactory.CreateProdus(5);
+            produs.Pret = update.Pret.Value;
 
-            _command.Setup(repo => repo.Update(5, update)).ReturnsAsync(movie);
+            _command.Setup(repo => repo.Update(5, update)).ReturnsAsync(produs);
 
             var result = await _controller.UpdateProdus(5, update);
 
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
 
             Assert.Equal(okResult.StatusCode, 200);
-            Assert.Equal(okResult.Value, movie);
+            Assert.Equal(okResult.Value, produs);
 
         }
 
@@ -165,16 +165,16 @@ namespace Test.UnitTests
         [Fact]
         public async Task Delete_ValidPrice()
         {
-            var movie = TestProdusFactory.CreateProdus(1);
+            var produs = TestProdusFactory.CreateProdus(1);
 
-            _command.Setup(repo => repo.Delete(1)).ReturnsAsync(movie);
+            _command.Setup(repo => repo.Delete(1)).ReturnsAsync(produs);
 
             var result = await _controller.DeleteProdus(1);
 
             var okReult = Assert.IsType<OkObjectResult>(result.Result);
 
             Assert.Equal(200, okReult.StatusCode);
-            Assert.Equal(movie, okReult.Value);
+            Assert.Equal(produs, okReult.Value);
 
         }
 
