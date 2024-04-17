@@ -56,7 +56,7 @@ namespace ProduseApi.Service
             {
                 throw new ItemDoesNotExist(Constants.Constants.ItemDoesNotExist);
             }
-            produs = await _repository.DeleteById(id);
+            await _repository.DeleteById(id);
             return produs;
         }
     }
