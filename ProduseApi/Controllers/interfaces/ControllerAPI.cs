@@ -5,38 +5,38 @@ using ProduseApi.Models;
 namespace ProduseApi.Controllers.interfaces
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/[controller]/")]
     public abstract class ControllerAPI : ControllerBase
     {
 
 
-        [HttpGet("/all")]
+        [HttpGet("All")]
         [ProducesResponseType(statusCode: 200, type: typeof(List<Produs>))]
         [ProducesResponseType(statusCode: 400, type: typeof(String))]
         public abstract Task<ActionResult<List<Produs>>> GetAll();
 
-        [HttpGet("/findById")]
+        [HttpGet("FindById")]
         [ProducesResponseType(statusCode: 200, type: typeof(Produs))]
         [ProducesResponseType(statusCode: 400, type: typeof(String))]
         public abstract Task<ActionResult<Produs>> GetById([FromQuery] int id);
 
-        [HttpGet("/findByName")]
+        [HttpGet("FindByName")]
         [ProducesResponseType(statusCode: 200, type: typeof(Produs))]
         [ProducesResponseType(statusCode: 400, type: typeof(String))]
         public abstract Task<ActionResult<Produs>> GetByName([FromQuery] string name);
 
-        [HttpPost("/createProdus")]
+        [HttpPost("CreateProduct")]
         [ProducesResponseType(statusCode: 201, type: typeof(Produs))]
         [ProducesResponseType(statusCode: 400, type: typeof(String))]
         public abstract Task<ActionResult<Produs>> CreateProdus(CreateRequest request);
 
-        [HttpPut("/updateProdus")]
+        [HttpPut("UpdateProduct")]
         [ProducesResponseType(statusCode: 200, type: typeof(Produs))]
         [ProducesResponseType(statusCode: 400, type: typeof(String))]
         [ProducesResponseType(statusCode: 404, type: typeof(String))]
         public abstract Task<ActionResult<Produs>> UpdateProdus([FromQuery] int id, UpdateRequest request);
 
-        [HttpDelete("/deleteProdus")]
+        [HttpDelete("DeleteProduct")]
         [ProducesResponseType(statusCode: 200, type: typeof(Produs))]
         [ProducesResponseType(statusCode: 404, type: typeof(String))]
         public abstract Task<ActionResult<Produs>> DeleteProdus([FromQuery] int id);
