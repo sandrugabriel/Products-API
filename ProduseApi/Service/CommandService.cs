@@ -40,7 +40,7 @@ namespace ProduseApi.Service
             }
 
 
-            if (produs.Pret <= 0)
+            if (request.Pret <= 0)
             {
                 throw new InvalidPrice(Constants.Constants.InvalidPrice);
             }
